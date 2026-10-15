@@ -1,12 +1,13 @@
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+import { type MessageKey, useT } from "#/lib/i18n";
 
 type ThemeMode = "light" | "dark" | "auto";
 
-const MODE_LABELS: Record<ThemeMode, string> = {
-	light: "Light",
-	dark: "Dark",
-	auto: "System",
+const MODE_LABELS: Record<ThemeMode, MessageKey> = {
+	light: "themeLight",
+	dark: "themeDark",
+	auto: "themeAuto",
 };
 
 function getInitialMode(): ThemeMode {
@@ -39,6 +40,7 @@ function applyThemeMode(mode: ThemeMode) {
 }
 
 export default function ThemeToggle() {
+	const t = useT();
 	const [mode, setMode] = useState<ThemeMode>("auto");
 
 	useEffect(() => {
@@ -70,7 +72,7 @@ export default function ThemeToggle() {
 		window.localStorage.setItem("theme", nextMode);
 	}
 
-	const label = `Theme mode: ${MODE_LABELS[mode]}. Click to switch to ${MODE_LABELS[nextMode]}.`;
+	const label = `${t(MODE_LABELS[mode])} → ${t(MODE_LABELS[nextMode])}`;
 
 	return (
 		<button
@@ -78,13 +80,13 @@ export default function ThemeToggle() {
 			onClick={toggleMode}
 			aria-label={label}
 			title={label}
-			className="group inline-flex cursor-pointer items-center gap-2 rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3 py-1.5 text-sm font-semibold text-[var(--sea-ink)] shadow-[0_8px_22px_rgba(30,90,72,0.08)] transition hover:-translate-y-0.5 hover:bg-[color-mix(in_oklab,var(--chip-bg)_82%,white_18%)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--lagoon)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--bg-base)]"
+			className="brand-panel group inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-accent)]"
 		>
 			<span className="relative size-4">
 				<Sun className="absolute inset-0 size-4 rotate-0 scale-100 transition-transform duration-200 ease-out dark:-rotate-90 dark:scale-0" />
 				<Moon className="absolute inset-0 size-4 rotate-90 scale-0 transition-transform duration-200 ease-out dark:rotate-0 dark:scale-100" />
 			</span>
-			<span>{MODE_LABELS[mode]}</span>
+			<span>{t(MODE_LABELS[mode])}</span>
 		</button>
 	);
 }

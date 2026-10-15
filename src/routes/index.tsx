@@ -1,29 +1,70 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { type MessageKey, useT } from "#/lib/i18n";
 
 export const Route = createFileRoute("/")({ component: App });
 
+const STEPS: { command: string; note: MessageKey }[] = [
+	{ command: "npm install", note: "stepInstall" },
+	{ command: "npm run dev", note: "stepDev" },
+	{ command: "claude", note: "stepClaude" },
+];
+
 function App() {
+	const t = useT();
+
 	return (
-		<main className="page-wrap px-4 pb-8 pt-14">
-			<section className="island-shell rise-in relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-10 sm:py-14">
-				<div className="pointer-events-none absolute -left-20 -top-24 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(79,184,178,0.32),transparent_66%)]" />
-				<div className="pointer-events-none absolute -bottom-20 -right-20 h-56 w-56 rounded-full bg-[radial-gradient(circle,rgba(47,106,74,0.18),transparent_66%)]" />
-				<p className="island-kicker mb-3">TanStack Start Base Template</p>
-				<h1 className="display-title mb-5 max-w-3xl text-4xl leading-[1.02] font-bold tracking-tight text-[var(--sea-ink)] sm:text-6xl">
-					Start simple, ship quickly.
-				</h1>
-				<p className="mb-8 max-w-2xl text-base text-[var(--sea-ink-soft)] sm:text-lg">
-					This base starter intentionally keeps things light: two routes, clean
-					structure, and the essentials you need to build from scratch.
-				</p>
-				<div className="flex flex-wrap gap-3">
-					<a
-						href="/about"
-						className="rounded-full border border-[rgba(50,143,151,0.3)] bg-[rgba(79,184,178,0.14)] px-5 py-2.5 text-sm font-semibold text-[var(--lagoon-deep)] no-underline transition hover:-translate-y-0.5 hover:bg-[rgba(79,184,178,0.24)]"
-					>
-						About This Starter
-					</a>
+		<main className="page-wrap px-4 pb-20 pt-14">
+			<section className="rise-in grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
+				<div>
+					<h1 className="display-title mb-6 text-5xl leading-[1.05] sm:text-6xl">
+						{t("heroTitle")}{" "}
+						<span className="accent-underline">{t("heroTitleAccent")}</span>
+					</h1>
+					<p className="display-title mb-8 text-2xl sm:text-3xl">
+						{t("heroSubtitle")}
+					</p>
+					<div className="flex flex-wrap gap-3">
+						<a
+							href="/about"
+							className="brand-panel rounded-full px-5 py-2.5 text-sm font-semibold no-underline transition hover:-translate-y-0.5"
+						>
+							{t("aboutButton")}
+						</a>
+						<a
+							href="https://github.com/pnowy/claude-course"
+							target="_blank"
+							rel="noreferrer"
+							className="rounded-full bg-[var(--brand-accent)] px-5 py-2.5 text-sm font-semibold text-black no-underline transition hover:-translate-y-0.5"
+						>
+							{t("materialsButton")}
+						</a>
+					</div>
 				</div>
+				<img
+					src="/course-logo.jpg"
+					alt={t("logoAlt")}
+					width={1600}
+					height={896}
+					className="w-full rounded-2xl border border-[var(--brand-line)] shadow-2xl"
+				/>
+			</section>
+
+			<section
+				className="rise-in brand-panel terminal mt-14 rounded-2xl p-6 text-sm sm:p-8 sm:text-base"
+				style={{ animationDelay: "0.7s" }}
+			>
+				<p className="mb-4 text-[var(--brand-accent)]">
+					# {t("gettingStarted")}
+				</p>
+				<ul className="m-0 list-none space-y-2 p-0">
+					{STEPS.map((step) => (
+						<li key={step.command}>
+							<span className="text-[var(--brand-accent)]">$</span>{" "}
+							{step.command}{" "}
+							<span className="opacity-60"># {t(step.note)}</span>
+						</li>
+					))}
+				</ul>
 			</section>
 		</main>
 	);
